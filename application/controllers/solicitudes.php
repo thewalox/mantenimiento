@@ -240,6 +240,11 @@ class Solicitudes extends CI_controller
             $this->pdf->Cell(180,7, 'Diagnostico','',0,'L',0);
             $this->pdf->Ln(7);
             $this->pdf->MultiCell(180,5,utf8_decode($solicitud->diagnostico), 1);
+            //Se agrega un salto de linea
+            $this->pdf->Ln(7);
+            $this->pdf->Cell(180,7, 'Solucion','',0,'L',0);
+            $this->pdf->Ln(7);
+            $this->pdf->MultiCell(180,5,utf8_decode($solicitud->solucion), 1);
             /*$this->pdf->Cell(25,7,$solicitud->servicio,'B',0,'L',0);
             $this->pdf->Cell(40,7,$solicitud->tipo_mtto,'B',0,'C',0);
             $this->pdf->Cell(25,7,$solicitud->estado,'B',0,'L',0);

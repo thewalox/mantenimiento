@@ -16,7 +16,14 @@
 					
 					</div>
 					<div class="panel panel-primary">
-						<div class="panel-heading">Solicitud de Mantenimiento # <?php echo $solicitud->idsolicitud; ?></div>
+						<div class="panel-heading">
+							<div class="form-group">
+								<div class="col-md-6">Solicitud de Mantenimiento # <?php echo $solicitud->idsolicitud; ?></div>
+								<div class="col-md-6 text-right">
+									<a href="<?php echo base_url('solicitudes/imprimir_solicitud/'. $solicitud->idsolicitud); ?>" target="_blank"><img src="<?php echo base_url(); ?>assets/img/impresora.png" height="20px" width="20px" title="Imprimir"></a>
+								</div>
+							</div>
+						</div>
 					  	<div class="panel-body">
 					  		<div class="row">
 					  			<div class="form-group col-md-2">
