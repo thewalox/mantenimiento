@@ -117,8 +117,8 @@
 									<input type="text" placeholder="Dias" id="dias" name="dias" value="<?php echo $solicitud->dias; ?>" class="form-control input-sm" disabled>
 								</div>
 								<div class="form-group col-md-4">
-									<label for="usuario">Usuario Solucion</label>
-									<input type="text" placeholder="Usuario de Solucion" id="ususol" name="ususol" value="<?php echo $solicitud->usuario_solucion; ?>" class="form-control input-sm" disabled>
+									<label for="tecnico">Tecnico</label>
+									<input type="text" placeholder="Tecnico" id="tecnico" name="tecnico" value="<?php echo $solicitud->tecnico; ?>" class="form-control input-sm" disabled>
 								</div>
 					  		</div>
 
@@ -130,6 +130,23 @@
 								<div class="form-group col-md-6">
 									<label for="solucion">Solucion</label>
 									<textarea class="form-control input-sm" rows="3" id="solucion" name="solucion" disabled><?php echo $solicitud->solucion; ?></textarea>
+								</div>
+					  		</div>
+
+					  		<div class="row">
+					  			<div class="form-group col-md-10">
+									<label for="pendiente">Tarea Pendiente</label>
+									<input type="text" placeholder="Tarea Pendiente" id="pendiente" name="pendiente" value="<?php echo $solicitud->pendiente; ?>" class="form-control input-sm" disabled>
+								</div>
+								<div class="form-group col-md-2">
+									<label for="pendiente">Estado Tarea</label>
+									<input type="text" placeholder="Tarea Pendiente" id="pendiente" name="pendiente" value="<?php echo $solicitud->estado_pendiente; ?>" class="form-control input-sm" disabled>
+								</div>
+					  		</div>
+
+					  		<div class="row">
+					  			<div class="form-group col-md-4">
+									<label for="usuario">Cerrada Por: <?php echo $solicitud->usuario_solucion; ?></label>
 								</div>
 					  		</div>
 					  	</div>

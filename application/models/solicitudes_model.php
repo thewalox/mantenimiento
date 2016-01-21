@@ -27,12 +27,15 @@ class Solicitudes_model extends CI_Model
 		
 	}
 
-	public function cerrar_solicitud($id, $usuario, $tiposol, $dias, $diagnostico, $solucion){
+	public function cerrar_solicitud($id, $usuario, $tiposol, $dias, $diagnostico, $solucion, $tecnico, $pendiente, $est_pend){
 		$sql = "UPDATE solicitudes SET tipo_solucion = ". $this->db->escape($tiposol) .",
 				dias_solucion = ". $this->db->escape($dias) .",
 				diagnostico = UPPER(". $this->db->escape($diagnostico) ."),
 				solucion = UPPER(". $this->db->escape($solucion) ."),
 				fecha_solucion = NOW(), usuario_solucion = ". $this->db->escape($usuario) .",
+				tecnico = UPPER(". $this->db->escape($tecnico) ."),
+				pendiente = UPPER(". $this->db->escape($pendiente) ."),
+				estado_pendiente = ". $this->db->escape($est_pend) .",
 				estado = 'C'
 				WHERE idsolicitud = '$id'";
 		//echo($sql);
@@ -48,17 +51,15 @@ class Solicitudes_model extends CI_Model
 		
 	}
 
-	public function elimina_maquina($codigo){
-		$sql = "UPDATE Solicitudes SET estado = 'I'
-				WHERE idmaquina = '$codigo'";
+	public function elimina_solicitud($codigo){
+		$sql = "UPDATE solicitudes SET estado = 'X'
+				WHERE idsolicitud = '$codigo'";
 		//echo $sql;			
 		if ($this->db->simple_query($sql)){
-        	$mensaje =  2; //Exito
+        	return true; //Exito
 		}else{
-        	$mensaje = 3; //Error
+        	return false; //Error
 		}
-
-		return $mensaje;
 		
 	}
 
@@ -66,9 +67,10 @@ class Solicitudes_model extends CI_Model
 		$sql = "SELECT s.idsolicitud, s.fecha_solicitud, 
 				CASE WHEN s.servicio = 'IN' THEN 'INMEDIATO' ELSE 'NO INMEDIATO' END AS servicio,
 				CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
-				CASE WHEN s.estado = 'P' THEN 'PENDIENTE' ELSE 'CERRADA' END AS estado,
+				CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
 				CASE WHEN s.estado = 'P' THEN 'warning' ELSE 'success' END AS color
 				FROM solicitudes s
+				WHERE s.estado <> 'X'
 				ORDER BY s.idsolicitud DESC ";
 
 		if($limit != 0){
@@ -95,7 +97,7 @@ class Solicitudes_model extends CI_Model
 			$sql = "SELECT s.idsolicitud, s.fecha_solicitud, 
 					CASE WHEN s.servicio = 'IN' THEN 'INMEDIATO' ELSE 'NO INMEDIATO' END AS servicio,
 					CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
-					CASE WHEN s.estado = 'P' THEN 'PENDIENTE' ELSE 'CERRADA' END AS estado,
+					CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
 					s.idempleado, e.nombre, d.desc_departamento, s.idmaquina, m.desc_maquina, se.desc_seccion,
 					p.desc_planta, s.orden_prod, s.detalle, DATEDIFF(NOW(), s.fecha_solicitud) AS dias
 					FROM solicitudes s
@@ -112,7 +114,7 @@ class Solicitudes_model extends CI_Model
 			$sql = "SELECT s.idsolicitud, s.fecha_solicitud, 
 					CASE WHEN s.servicio = 'IN' THEN 'INMEDIATO' ELSE 'NO INMEDIATO' END AS servicio,
 					CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
-					CASE WHEN s.estado = 'P' THEN 'PENDIENTE' ELSE 'CERRADA' END AS estado,
+					CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
 					s.idempleado, e.nombre, d.desc_departamento, s.idmaquina, m.desc_maquina, se.desc_seccion,
 					p.desc_planta, s.orden_prod, s.detalle, 
 					CASE 
@@ -120,7 +122,11 @@ class Solicitudes_model extends CI_Model
 					WHEN s.tipo_solucion = 'M' THEN 'MECANICO'
 					WHEN s.tipo_solucion = 'O' THEN 'OTROS'
 					ELSE '' END AS tipo_solucion, s.dias_solucion AS dias,
-					s.diagnostico, s.solucion, s.fecha_solucion, s.usuario_solucion
+					s.diagnostico, s.solucion, s.fecha_solucion, s.usuario_solucion, s.tecnico, s.pendiente, 
+					CASE 
+					WHEN s.estado_pendiente = 'P' THEN 'PENDIENTE' 
+					WHEN s.estado_pendiente = 'C' THEN 'CUMPLIDA' 
+					ELSE 'NO APLICA' END as estado_pendiente
 					FROM solicitudes s
 					INNER JOIN empleados  e ON e.idempleado = s.idempleado
 					INNER JOIN departamentos d ON d.iddepartamento = e.iddepartamento
@@ -138,16 +144,43 @@ class Solicitudes_model extends CI_Model
 		
 	}
 
-	public function get_Solicitudes_by_criterio($filtro){
-		$sql = "SELECT m.idmaquina, m.desc_maquina, s.desc_seccion
-				FROM Solicitudes m
-				INNER JOIN secciones s ON s.idseccion = m.idseccion
-				WHERE (m.idmaquina LIKE '%". $filtro ."%' 
-				OR m.desc_maquina like '%". $filtro ."%' 
-				OR s.desc_seccion like '%". $filtro ."%') 
-				AND m.estado = 'A' 
-				ORDER BY m.idmaquina";
-				//echo($sql);
+	public function get_solicitudes_by_criterio($id, $fecsol, $estado, $servicio, $tipo, $idmaq){
+		$sql = "SELECT s.idsolicitud, s.fecha_solicitud, 
+				CASE WHEN s.servicio = 'IN' THEN 'INMEDIATO' ELSE 'NO INMEDIATO' END AS servicio,
+				CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
+				CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
+				CASE WHEN s.estado = 'P' THEN 'warning' ELSE 'success' END AS color
+				FROM solicitudes s
+				WHERE s.estado <> 'X' ";
+
+		if($id != ""){
+			$sql .= " AND s.idsolicitud = ". $this->db->escape($id);
+		}
+
+		if($fecsol != ""){
+			$sql .= " AND s.fecha_solicitud = ". $this->db->escape($fecsol);
+		}
+
+		if($estado != "0"){
+			$sql .= " AND s.estado = ". $this->db->escape($estado);
+		}
+
+		if($servicio != "0"){
+			$sql .= " AND s.servicio = ". $this->db->escape($servicio);
+		}
+
+		if($tipo != "0"){
+			$sql .= " AND s.tipo_mtto = ". $this->db->escape($tipo);
+		}
+
+		if($idmaq != ""){
+			$sql .= " AND s.idmaquina = ". $this->db->escape($idmaq);
+		}
+
+		$sql .=	" ORDER BY s.idsolicitud DESC ";
+
+		//echo $sql;
+
 		$res = $this->db->query($sql);
 		return $res->result_array();
 		

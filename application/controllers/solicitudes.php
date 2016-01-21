@@ -115,14 +115,21 @@ class Solicitudes extends CI_controller
 
 		$this->form_validation->set_rules('diagnostico', 'Diagnostico', 'required');
 		$this->form_validation->set_rules('solucion', 'Solucion', 'required');
+		$this->form_validation->set_rules('tecnico', 'Tecnico', 'required');
 
 		$this->form_validation->set_rules('tiposol', 'Tipo de Solucion', 'required|callback_check_default');
 
 		$this->form_validation->set_message('required','El campo %s es obligatorio');
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');
 
+		if ($this->input->post("pendiente") == "") {
+			$estado_pendiente = "N";
+		}else{
+			$estado_pendiente = "P";
+		}
+
 	    if($this->form_validation->run()!=false){
-			$datos["mensaje"] = $this->Solicitudes_model->cerrar_solicitud($this->input->post("id"), $this->input->post("usuario"), $this->input->post("tiposol"), $this->input->post("dias"), $this->input->post("diagnostico"), $this->input->post("solucion"));
+			$datos["mensaje"] = $this->Solicitudes_model->cerrar_solicitud($this->input->post("id"), $this->input->post("usuario"), $this->input->post("tiposol"), $this->input->post("dias"), $this->input->post("diagnostico"), $this->input->post("solucion"), $this->input->post("tecnico"), $this->input->post("pendiente"), $estado_pendiente);
 		}else{
 			$datos["mensaje"] = validation_errors(); //incorrecto
 		}
@@ -152,14 +159,14 @@ class Solicitudes extends CI_controller
 		
 	}
 
-	function eliminar_maquina($id){
+	function eliminar_solicitud($id){
 		
-		$datos["mensaje"] = $this->Solicitudes_model->elimina_maquina($id);
-		redirect('Solicitudes/form_buscar');
+		$datos["mensaje"] = $this->Solicitudes_model->elimina_solicitud($id);
+		redirect('solicitudes/form_buscar');
 	}
 
 	function get_solicitudes_criterio(){
-		$datos = $this->Solicitudes_model->get_solicitudes_by_criterio($this->input->get("filtro"));
+		$datos = $this->Solicitudes_model->get_solicitudes_by_criterio($this->input->get("id"), $this->input->get("fecsol"), $this->input->get("estado"), $this->input->get("servicio"), $this->input->get("tipo"), $this->input->get("idmaq"));
 		echo json_encode($datos);
 	}
 

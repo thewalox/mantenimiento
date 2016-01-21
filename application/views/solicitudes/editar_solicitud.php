@@ -111,6 +111,10 @@
 									<label for="dias">Dias</label>
 									<input type="text" placeholder="Dias" id="dias" name="dias" value="<?php echo $solicitud->dias; ?>" class="form-control input-sm" disabled>
 								</div>
+								<div class="form-group col-md-7">
+									<label for="tecnico">Tecnico que atendió la solicitud</label>
+									<input type="text" placeholder="Tecnico" id="tecnico" name="tecnico" class="form-control input-sm">
+								</div>
 					  		</div>
 
 					  		<div class="row">
@@ -121,6 +125,13 @@
 								<div class="form-group col-md-6">
 									<label for="solucion">Solucion</label>
 									<textarea class="form-control input-sm" rows="3" id="solucion" name="solucion"></textarea>
+								</div>
+					  		</div>
+
+					  		<div class="row">
+					  			<div class="form-group col-md-12">
+									<label for="pendiente">Tarea Pendiente</label>
+									<input type="text" placeholder="Tarea Pendiente" id="pendiente" name="pendiente" class="form-control input-sm">
 								</div>
 					  		</div>
 					  	</div>
@@ -176,8 +187,10 @@
 					var usuario = $("#usuario").val();
 					var tiposol = $("#tiposol").val();
 					var dias = $("#dias").val();
+					var tecnico = $("#tecnico").val();
 					var diagnostico = $("#diagnostico").val();
 					var solucion = $("#solucion").val();
+					var pendiente = $("#pendiente").val();
 
 				    $.ajax({
 				    	type:"POST",
@@ -187,8 +200,10 @@
 				    		'usuario'		: 	usuario,
 				    		'tiposol'		: 	tiposol,
 				    		'dias'			: 	dias,
+				    		'tecnico'		: 	tecnico,
 				    		'diagnostico'	: 	diagnostico,
-				    		'solucion'		: 	solucion
+				    		'solucion'		: 	solucion,
+				    		'pendiente'		: 	pendiente
 				    	},
 				    	success:function(data){
 				    		console.log(data);
@@ -202,6 +217,8 @@
 								$("#tiposol").attr('disabled', 'disabled');
 								$("#diagnostico").attr('disabled', 'disabled');
 								$("#solucion").attr('disabled', 'disabled');
+								$("#tecnico").attr('disabled', 'disabled');
+								$("#pendiente").attr('disabled', 'disabled');
 							}else if(json.mensaje == false){
 									html += "<div class='alert alert-danger' role='alert'>Ah ocurrido un error al intentar cerrar esta solicitud. Por favor revise la informacion o comuniquese con el administrador del sistema</div>";
 							}else{

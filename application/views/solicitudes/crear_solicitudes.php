@@ -20,7 +20,7 @@
 					  			<div class="form-group col-md-2">
 									<label for="codigo">fecha</label>
 									<div class='input-group date' id='datetimepicker1'>
-						                <input type='text' class="form-control" name="fecdoc" id="fecdoc" value="<?php echo date("Y-m-d"); ?>" disabled/>
+						                <input type='text' class="form-control input-sm" name="fecdoc" id="fecdoc" value="<?php echo date("Y-m-d"); ?>" disabled/>
 						                <span class="input-group-addon">
 						                <span class="glyphicon glyphicon-calendar"></span>
 						                </span>
