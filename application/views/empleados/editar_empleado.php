@@ -36,6 +36,11 @@
             					}
             				?>
 						</select>
+						<div class="checkbox">
+							<label>
+						    	<input type="checkbox" id="tecnico" name="tecnico" <?php if($empleado->tecnico == 'S'){?> checked <?php } ?>> Marque solo si el empleado es un tecnico
+							</label>
+						</div>
 					</div>
 										
 					<input type="button" name="aceptar" id="aceptar" value="Aceptar" class="btn btn-primary">
@@ -56,14 +61,22 @@
 				var cedula = $("#cedula").val();
 				var nombre = $("#nombre").val();
 				var dep = $("#dep").val();
+				var tecnico = "";
 
+				if( $('#tecnico').prop('checked') ) {
+				    tecnico = 'S';
+				}else{
+					tecnico = 'N';
+				}
+				
 			    $.ajax({
 			    	type:"POST",
 			    	url:"<?php echo base_url('empleados/editar_empleado'); ?>",
 			    	data:{
 			    		'cedula'	: 	cedula,
 			    		'nombre'	: 	nombre,
-			    		'dep'		: 	dep
+			    		'dep'		: 	dep,
+			    		'tecnico'	: 	tecnico
 			    	},
 			    	success:function(data){
 			    		console.log(data);

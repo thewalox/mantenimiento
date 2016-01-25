@@ -126,13 +126,14 @@ class Solicitudes_model extends CI_Model
 					CASE 
 					WHEN s.estado_pendiente = 'P' THEN 'PENDIENTE' 
 					WHEN s.estado_pendiente = 'C' THEN 'CUMPLIDA' 
-					ELSE 'NO APLICA' END as estado_pendiente
+					ELSE 'NO APLICA' END as estado_pendiente, e2.nombre AS 'nombre_tecnico'
 					FROM solicitudes s
 					INNER JOIN empleados  e ON e.idempleado = s.idempleado
 					INNER JOIN departamentos d ON d.iddepartamento = e.iddepartamento
 					LEFT JOIN maquinas m ON m.idmaquina = s.idmaquina
 					LEFT JOIN secciones se ON se.idseccion = m.idseccion
 					LEFT JOIN plantas p ON p.idplanta = se.idplanta
+					LEFT JOIN empleados e2 ON e2.idempleado = s.tecnico
 					WHERE s.idsolicitud = '$id'
 					ORDER BY s.idsolicitud DESC";
 		}

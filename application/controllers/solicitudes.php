@@ -9,6 +9,7 @@ class Solicitudes extends CI_controller
 		parent::__construct();
 		$this->load->model("Solicitudes_model");
 		$this->load->model("Maquinas_model");
+		$this->load->model("Empleados_model");
 
 		$this->load->library('form_validation');
 		$this->load->library('pdf');
@@ -100,6 +101,7 @@ class Solicitudes extends CI_controller
 			$datos["titulo"] = " .: Mantenimiento :.";
 
 			$datos["solicitud"] = $this->Solicitudes_model->get_solicitud_by_id($id, 1);
+			$datos["tecnicos"] = $this->Empleados_model->get_tecnicos();
 			//$datos["seccion"] = $this->Secciones_model->get_secciones(0,0);
 			//print_r($datos);
 
@@ -115,9 +117,9 @@ class Solicitudes extends CI_controller
 
 		$this->form_validation->set_rules('diagnostico', 'Diagnostico', 'required');
 		$this->form_validation->set_rules('solucion', 'Solucion', 'required');
-		$this->form_validation->set_rules('tecnico', 'Tecnico', 'required');
 
 		$this->form_validation->set_rules('tiposol', 'Tipo de Solucion', 'required|callback_check_default');
+		$this->form_validation->set_rules('tecnico', 'Tecnico', 'required|callback_check_default');
 
 		$this->form_validation->set_message('required','El campo %s es obligatorio');
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');

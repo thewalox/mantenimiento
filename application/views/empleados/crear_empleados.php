@@ -34,6 +34,11 @@
             					}
             				?>
 						</select>
+						<div class="checkbox">
+							<label>
+						    	<input type="checkbox" id="tecnico" name="tecnico"> Marque solo si el empleado es un tecnico
+							</label>
+						</div>
 					</div>
 					
 					<input type="button" name="aceptar" id="aceptar" value="Aceptar" class="btn btn-primary">
@@ -52,6 +57,13 @@
 				var cedula = $("#cedula").val();
 				var nombre = $("#nombre").val();
 				var dep = $("#dep").val();
+				var tecnico = "";
+
+				if( $('#tecnico').prop('checked') ) {
+				    tecnico = 'S';
+				}else{
+					tecnico = 'N';
+				}
 
 			    $.ajax({
 			    	type:"POST",
@@ -59,7 +71,8 @@
 			    	data:{
 			    		'cedula'	: 	cedula,
 			    		'nombre'	: 	nombre,
-			    		'dep'		: 	dep
+			    		'dep'		: 	dep,
+			    		'tecnico'	: 	tecnico
 			    	},
 			    	success:function(data){
 			    		console.log(data);
@@ -73,6 +86,7 @@
 							$("#cedula").val("");
 							$("#nombre").val("");
 							$("#dep").val("0");
+							$("#tecnico").prop("checked", "");
 						}else if(json.mensaje == 3){
 								html += "<div class='alert alert-danger' role='alert'>Ah ocurrido un error al intentar crear este empleado. Por favor revise la informacion o comuniquese con el administrador del sistema</div>";
 						}else{

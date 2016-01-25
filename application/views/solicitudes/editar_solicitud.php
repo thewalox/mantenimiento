@@ -112,8 +112,17 @@
 									<input type="text" placeholder="Dias" id="dias" name="dias" value="<?php echo $solicitud->dias; ?>" class="form-control input-sm" disabled>
 								</div>
 								<div class="form-group col-md-7">
-									<label for="tecnico">Tecnico que atendió la solicitud</label>
-									<input type="text" placeholder="Tecnico" id="tecnico" name="tecnico" class="form-control input-sm">
+									<label for="departamento">Tecnico que atendió la solicitud</label>
+									<select class="form-control" name="tecnico" id="tecnico">
+										<option value="0">...</option>
+										<?php 
+											foreach($tecnicos as $tec){
+										?>
+			                				<option value="<?php echo $tec['idempleado']; ?>"><?php echo $tec['nombre']; ?></option>
+			            				<?php 
+			            					}
+			            				?>
+									</select>
 								</div>
 					  		</div>
 

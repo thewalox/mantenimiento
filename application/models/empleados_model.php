@@ -9,10 +9,10 @@ class Empleados_model extends CI_Model
 		parent::__construct();
 	}
 
-	public function add_empleado($cedula, $nombre, $dep){
-		$sql = "INSERT INTO empleados (idempleado, nombre, iddepartamento, estado)
+	public function add_empleado($cedula, $nombre, $dep, $tecnico){
+		$sql = "INSERT INTO empleados (idempleado, nombre, iddepartamento, tecnico, estado)
 				VALUES (". $this->db->escape($cedula) .", UPPER(". $this->db->escape($nombre) ."), ".
-				$this->db->escape($dep) .", 'A')";
+				$this->db->escape($dep) .", ". $this->db->escape($tecnico) .", 'A')";
 		//echo $sql;
 		if ($this->db->simple_query($sql)){
         	$mensaje =  2; //Exito
@@ -24,9 +24,10 @@ class Empleados_model extends CI_Model
 		
 	}
 
-	public function edit_empleado($cedula, $nombre, $dep){
+	public function edit_empleado($cedula, $nombre, $dep, $tecnico){
 		$sql = "UPDATE empleados SET nombre = UPPER(". $this->db->escape($nombre) ."),
-				iddepartamento = ". $this->db->escape($dep) ."
+				iddepartamento = ". $this->db->escape($dep) .",
+				tecnico = ". $this->db->escape($tecnico) ."
 				WHERE idempleado = '$cedula'";
 		//echo($sql);
 		if ($this->db->simple_query($sql)){
@@ -94,6 +95,18 @@ class Empleados_model extends CI_Model
 				AND e.estado = 'A' 
 				ORDER BY e.idempleado";
 				//echo($sql);
+		$res = $this->db->query($sql);
+		return $res->result_array();
+		
+	}
+
+	public function get_tecnicos(){
+		$sql = "SELECT * 
+				FROM empleados 
+				WHERE estado = 'A' AND tecnico = 'S'
+				ORDER BY nombre";
+		//echo $sql;
+
 		$res = $this->db->query($sql);
 		return $res->result_array();
 		

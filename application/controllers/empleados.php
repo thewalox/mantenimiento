@@ -43,7 +43,7 @@ class Empleados extends CI_controller
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');
 
 	    if($this->form_validation->run()!=false){
-			$datos["mensaje"] = $this->Empleados_model->add_empleado($this->input->post("cedula"), $this->input->post("nombre"), $this->input->post("dep"));
+			$datos["mensaje"] = $this->Empleados_model->add_empleado($this->input->post("cedula"), $this->input->post("nombre"), $this->input->post("dep"), $this->input->post("tecnico"));
 		}else{
 			$datos["mensaje"] = validation_errors(); //incorrecto
 		}
@@ -121,7 +121,7 @@ class Empleados extends CI_controller
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');
 
 	    if($this->form_validation->run()!=false){
-			$datos["mensaje"] = $this->Empleados_model->edit_empleado($this->input->post("cedula"), $this->input->post("nombre"), $this->input->post("dep"));
+			$datos["mensaje"] = $this->Empleados_model->edit_empleado($this->input->post("cedula"), $this->input->post("nombre"), $this->input->post("dep"), $this->input->post("tecnico"));
 		}else{
 			$datos["mensaje"] = validation_errors(); //incorrecto
 		}

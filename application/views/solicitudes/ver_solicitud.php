@@ -118,7 +118,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label for="tecnico">Tecnico</label>
-									<input type="text" placeholder="Tecnico" id="tecnico" name="tecnico" value="<?php echo $solicitud->tecnico; ?>" class="form-control input-sm" disabled>
+									<input type="text" placeholder="Tecnico" id="tecnico" name="tecnico" value="<?php echo $solicitud->nombre_tecnico; ?>" class="form-control input-sm" disabled>
 								</div>
 					  		</div>
 
