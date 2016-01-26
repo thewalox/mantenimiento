@@ -28,6 +28,9 @@
 									<th>Codigo</th>
 									<th>Descripcion Maquina</th>
 									<th>Seccion</th>
+									<th>Marca</th>
+									<th>Modelo</th>
+									<th>Serial</th>
 									<th></th>
 									<th></th>
 								</tr>
@@ -40,6 +43,9 @@
 								<td><?php echo $maq["idmaquina"]; ?></td>
 								<td><?php echo $maq["desc_maquina"]; ?></td>
 								<td><?php echo $maq["desc_seccion"]; ?></td>
+								<td><?php echo $maq["marca"]; ?></td>
+								<td><?php echo $maq["modelo"]; ?></td>
+								<td><?php echo $maq["serial"]; ?></td>
 								<td><a href="<?php echo base_url('maquinas/form_editar/'. $maq["idmaquina"]); ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
 								<td><a href="<?php echo base_url('maquinas/eliminar_maquina/'. $maq["idmaquina"]); ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 							</tr>
@@ -87,6 +93,9 @@
 						html += "<th>Codigo</th>";
 						html += "<th>Descripcion Maquina</th>";
 						html += "<th>Seccion</th>";
+						html += "<th>Marca</th>";
+						html += "<th>Modelo</th>";
+						html += "<th>Serial</th>";
 						html += "<th></th>";
 						html += "<th></th>";
 						html += "</tr>";
@@ -97,6 +106,9 @@
 								html +=	"<td>" + json[datos].idmaquina + "</td>";
 								html +=	"<td>" + json[datos].desc_maquina + "</td>";
 								html +=	"<td>" + json[datos].desc_seccion + "</td>";
+								html +=	"<td>" + json[datos].marca + "</td>";
+								html +=	"<td>" + json[datos].modelo + "</td>";
+								html +=	"<td>" + json[datos].serial + "</td>";
 								html +=	"<td><a href='<?php echo base_url('maquinas/form_editar/" + json[datos].idmaquina  + "'); ?>'><span class='glyphicon glyphicon-pencil'></span></a></td>";
 								html +=	"<td><a href='<?php echo base_url('maquinas/eliminar_maquina/" + json[datos].idmaquina  + "'); ?>'><span class='glyphicon glyphicon-trash'></span></a></td>";
 								html += "</tr>";

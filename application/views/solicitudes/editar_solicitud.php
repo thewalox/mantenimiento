@@ -112,7 +112,7 @@
 									<input type="text" placeholder="Dias" id="dias" name="dias" value="<?php echo $solicitud->dias; ?>" class="form-control input-sm" disabled>
 								</div>
 								<div class="form-group col-md-7">
-									<label for="departamento">Tecnico que atendió la solicitud</label>
+									<label for="tecnico">Tecnico que atendió la solicitud</label>
 									<select class="form-control" name="tecnico" id="tecnico">
 										<option value="0">...</option>
 										<?php 

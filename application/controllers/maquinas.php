@@ -43,7 +43,7 @@ class Maquinas extends CI_controller
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');
 
 	    if($this->form_validation->run()!=false){
-			$datos["mensaje"] = $this->Maquinas_model->add_maquina($this->input->post("codigo"), $this->input->post("desc"), $this->input->post("seccion"));
+			$datos["mensaje"] = $this->Maquinas_model->add_maquina($this->input->post("codigo"), $this->input->post("desc"), $this->input->post("seccion"), $this->input->post("marca"), $this->input->post("modelo"), $this->input->post("serial"));
 		}else{
 			$datos["mensaje"] = validation_errors(); //incorrecto
 		}
@@ -121,7 +121,7 @@ class Maquinas extends CI_controller
 		$this->form_validation->set_message('check_default','Seleccione un valor para el campo %s');
 
 	    if($this->form_validation->run()!=false){
-			$datos["mensaje"] = $this->Maquinas_model->edit_maquina($this->input->post("codigo"), $this->input->post("desc"), $this->input->post("seccion"));
+			$datos["mensaje"] = $this->Maquinas_model->edit_maquina($this->input->post("codigo"), $this->input->post("desc"), $this->input->post("seccion"), $this->input->post("marca"), $this->input->post("modelo"), $this->input->post("serial"));
 		}else{
 			$datos["mensaje"] = validation_errors(); //incorrecto
 		}

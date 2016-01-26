@@ -37,9 +37,24 @@
             				?>
 						</select>
 					</div>
+
+					<div class="form-group">
+						<label for="marca">Marca</label>
+						<input type="text" placeholder="Marca" id="marca" name="marca" value="<?php echo $maquina->marca; ?>" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="modelo">Modelo</label>
+						<input type="text" placeholder="Modelo" id="modelo" name="modelo" value="<?php echo $maquina->modelo; ?>" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="serial">Serial</label>
+						<input type="text" placeholder="Serial" id="serial" name="serial" value="<?php echo $maquina->serial; ?>" class="form-control">
+					</div>
 										
 					<input type="button" name="aceptar" id="aceptar" value="Aceptar" class="btn btn-primary">
-					<input type="button" name="regresar" value="Regresar" class="btn btn-success" onclick="javascript:location.href = '<?php echo base_url().'Maquinas/form_buscar'; ?>';">
+					<input type="button" name="regresar" value="Regresar" class="btn btn-success" onclick="javascript:location.href = '<?php echo base_url().'maquinas/form_buscar'; ?>';">
 
 				</form>
 				
@@ -56,6 +71,9 @@
 				var codigo = $("#codigo").val();
 				var desc = $("#desc").val();
 				var seccion = $("#seccion").val();
+				var marca = $("#marca").val();
+				var modelo = $("#modelo").val();
+				var serial = $("#serial").val();
 
 			    $.ajax({
 			    	type:"POST",
@@ -63,7 +81,10 @@
 			    	data:{
 			    		'codigo'	: 	codigo,
 			    		'desc'		: 	desc,
-			    		'seccion'	: 	seccion
+			    		'seccion'	: 	seccion,
+			    		'marca'		: 	marca,
+			    		'modelo'	: 	modelo,
+			    		'serial'	: 	serial
 			    	},
 			    	success:function(data){
 			    		console.log(data);

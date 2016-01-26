@@ -35,6 +35,21 @@
             				?>
 						</select>
 					</div>
+
+					<div class="form-group">
+						<label for="marca">Marca</label>
+						<input type="text" placeholder="Marca" id="marca" name="marca" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="modelo">Modelo</label>
+						<input type="text" placeholder="Modelo" id="modelo" name="modelo" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label for="serial">Serial</label>
+						<input type="text" placeholder="Serial" id="serial" name="serial" class="form-control">
+					</div>
 					
 					<input type="button" name="aceptar" id="aceptar" value="Aceptar" class="btn btn-primary">
 				</form>
@@ -52,14 +67,21 @@
 				var codigo = $("#codigo").val();
 				var desc = $("#desc").val();
 				var seccion = $("#seccion").val();
+				var marca = $("#marca").val();
+				var modelo = $("#modelo").val();
+				var serial = $("#serial").val();
+
 
 			    $.ajax({
 			    	type:"POST",
 			    	url:"<?php echo base_url('maquinas/crear_maquina'); ?>",
 			    	data:{
-			    		'codigo'		: 	codigo,
+			    		'codigo'	: 	codigo,
 			    		'desc'		: 	desc,
-			    		'seccion'	: 	seccion
+			    		'seccion'	: 	seccion,
+			    		'marca'		: 	marca,
+			    		'modelo'	: 	modelo,
+			    		'serial'	: 	serial
 			    	},
 			    	success:function(data){
 			    		console.log(data);
@@ -73,6 +95,9 @@
 							$("#codigo").val("");
 							$("#desc").val("");
 							$("#seccion").val("0");
+							$("#marca").val("");
+							$("#modelo").val("");
+							$("#serial").val("");
 						}else if(json.mensaje == 3){
 								html += "<div class='alert alert-danger' role='alert'>Ah ocurrido un error al intentar crear esta maquina. Por favor revise la informacion o comuniquese con el administrador del sistema</div>";
 						}else{
