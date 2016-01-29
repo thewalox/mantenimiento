@@ -102,6 +102,8 @@
 		                                <li class="menu-item "><a href="<?php echo base_url(); ?>solicitudes/form_crear">Crear Solicitud</a></li>
 		                                <li role="separator" class="divider"></li>
 		                                <li class="menu-item "><a href="<?php echo base_url(); ?>solicitudes/form_buscar">Gestion de Solicitudes</a></li>
+		                                <li role="separator" class="divider"></li>
+		                                <li class="menu-item "><a href="<?php echo base_url(); ?>solicitudes/form_buscar_tareas">Tareas Pendientes</a></li>
 		                            </ul>
 	                        	</li>
 				          	</ul>				

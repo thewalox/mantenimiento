@@ -11,7 +11,7 @@ class Maquinas_model extends CI_Model
 
 	public function add_maquina($codigo, $desc, $seccion, $marca, $modelo, $serial){
 		$sql = "INSERT INTO maquinas (idmaquina, desc_maquina, idseccion, marca, modelo, serial, estado)
-				VALUES (". $this->db->escape($codigo) .", UPPER(". $this->db->escape($desc) ."), 
+				VALUES (UPPER(". $this->db->escape($codigo) ."), UPPER(". $this->db->escape($desc) ."), 
 				". $this->db->escape($seccion) .", UPPER(". $this->db->escape($marca) ."),
 				UPPER(". $this->db->escape($modelo) ."), UPPER(". $this->db->escape($serial) ."), 'A')";
 		//echo $sql;

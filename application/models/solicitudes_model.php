@@ -13,8 +13,8 @@ class Solicitudes_model extends CI_Model
 		$sql = "INSERT INTO Solicitudes (fecha_solicitud, idempleado, servicio, tipo_mtto, 
 				idmaquina, orden_prod, detalle, estado)
 				VALUES (". $this->db->escape($fecdoc) . ", ". $this->db->escape($cedula) . ", ". 
-				$this->db->escape($servicio) . ", ". $this->db->escape($tipo) . ", ". 
-				$this->db->escape($maquina) . ", UPPER(". $this->db->escape($orden) ."), UPPER(". 
+				$this->db->escape($servicio) . ", ". $this->db->escape($tipo) . ", UPPER(". 
+				$this->db->escape($maquina) . "), UPPER(". $this->db->escape($orden) ."), UPPER(". 
 				$this->db->escape($detalle) ."), 'P')";
 		//echo $sql;
 		if ($this->db->simple_query($sql)){
@@ -85,7 +85,7 @@ class Solicitudes_model extends CI_Model
 	}
 
 	function get_total_solicitudes(){
-		$this->db->from('Solicitudes')->where('estado');
+		$this->db->from('solicitudes')->where('estado');
 		return $this->db->count_all_results();
   	}
 
@@ -99,7 +99,7 @@ class Solicitudes_model extends CI_Model
 					CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
 					CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
 					s.idempleado, e.nombre, d.desc_departamento, s.idmaquina, m.desc_maquina, se.desc_seccion,
-					p.desc_planta, s.orden_prod, s.detalle, DATEDIFF(NOW(), s.fecha_solicitud) AS dias
+					p.desc_planta, s.orden_prod, s.detalle, DATEDIFF(NOW(), s.fecha_solicitud) AS dias, s.pendiente
 					FROM solicitudes s
 					INNER JOIN empleados  e ON e.idempleado = s.idempleado
 					INNER JOIN departamentos d ON d.iddepartamento = e.iddepartamento
@@ -184,6 +184,77 @@ class Solicitudes_model extends CI_Model
 
 		$res = $this->db->query($sql);
 		return $res->result_array();
+		
+	}
+
+	function get_total_pendientes(){
+		$this->db->from('solicitudes')->where('estado_pendiente','P');
+		return $this->db->count_all_results();
+  	}
+
+  	public function get_pendientes($limit, $segmento){
+		$sql = "SELECT s.idsolicitud, s.fecha_solicitud, s.pendiente
+				FROM solicitudes s
+				WHERE s.estado <> 'X' AND s.estado_pendiente = 'P'
+				ORDER BY s.idsolicitud DESC ";
+
+		if($limit != 0){
+			$sql .= "LIMIT ". $segmento ." , ". $limit;
+		}
+
+		//echo $sql;
+
+		$res = $this->db->query($sql);
+		return $res->result_array();
+		
+	}
+
+	public function get_pendientes_by_criterio($id, $fecsol, $idmaq){
+		$sql = "SELECT s.idsolicitud, s.fecha_solicitud, s.pendiente
+				FROM solicitudes s
+				WHERE s.estado <> 'X' AND s.estado_pendiente = 'P' ";
+
+		if($id != ""){
+			$sql .= " AND s.idsolicitud = ". $this->db->escape($id);
+		}
+
+		if($fecsol != ""){
+			$sql .= " AND s.fecha_solicitud = ". $this->db->escape($fecsol);
+		}
+
+		if($idmaq != ""){
+			$sql .= " AND s.idmaquina = ". $this->db->escape($idmaq);
+		}
+
+		$sql .=	" ORDER BY s.idsolicitud DESC ";
+
+		//echo $sql;
+
+		$res = $this->db->query($sql);
+		return $res->result_array();
+		
+	}
+
+	public function get_pendientes_by_id($id){
+		$sql = "SELECT s.idsolicitud, s.fecha_solicitud, s.pendiente
+				FROM solicitudes s
+				WHERE s.estado <> 'X' AND s.estado_pendiente = 'P' AND s.idsolicitud = '$id'
+				ORDER BY s.idsolicitud DESC ";		
+
+		$res = $this->db->query($sql);
+		return $res->row();
+		
+	}
+
+	public function cerrar_pendiente($id){
+		$sql = "UPDATE solicitudes SET estado_pendiente = 'C'
+				WHERE idsolicitud = '$id'";
+		//echo $sql;			
+		if ($this->db->simple_query($sql)){
+        	return true; //Exito
+		}else{
+        	return false; //Error
+		}
 		
 	}
 

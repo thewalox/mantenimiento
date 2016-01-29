@@ -254,6 +254,14 @@ class Solicitudes extends CI_controller
             $this->pdf->Cell(180,7, 'Solucion','',0,'L',0);
             $this->pdf->Ln(7);
             $this->pdf->MultiCell(180,5,utf8_decode($solicitud->solucion), 1);
+            //Se agrega un salto de linea
+            $this->pdf->Ln(7);
+            $this->pdf->Cell(180,7, 'Tarea Pendiente','',0,'L',0);
+            $this->pdf->Ln(7);
+            $this->pdf->MultiCell(180,5,utf8_decode($solicitud->pendiente), 1);
+            //Se agrega un salto de linea
+            $this->pdf->Ln(7);
+            $this->pdf->Cell(90,7, 'Estado Tarea: '. $solicitud->estado_pendiente,'',0,'L',0);
             /*$this->pdf->Cell(25,7,$solicitud->servicio,'B',0,'L',0);
             $this->pdf->Cell(40,7,$solicitud->tipo_mtto,'B',0,'C',0);
             $this->pdf->Cell(25,7,$solicitud->estado,'B',0,'L',0);
@@ -270,6 +278,72 @@ class Solicitudes extends CI_controller
          *
          */
         $this->pdf->Output("Solicitud de Mantenimiento.pdf", 'I');
+	}
+
+	function form_buscar_tareas(){
+
+		if (!$this->session->userdata('sess_id_user')) {
+		   	redirect("login");
+		}else{
+			$this->load->library('pagination');
+
+			/*Se personaliza la paginación para que se adapte a bootstrap*/
+			$config['base_url'] = base_url().'solicitudes/form_buscar_tareas/';
+			$config['total_rows'] = $this->Solicitudes_model->get_total_pendientes();
+			$config['per_page'] = 10;
+			$desde = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		    $config['cur_tag_open'] = '<li class="active"><a href="#">';
+		    $config['cur_tag_close'] = '</a></li>';
+		    $config['num_tag_open'] = '<li>';
+		    $config['num_tag_close'] = '</li>';
+		    $config['last_link'] = FALSE;
+		    $config['first_link'] = FALSE;
+		    $config['next_link'] = '&raquo;';
+		    $config['next_tag_open'] = '<li>';
+		    $config['next_tag_close'] = '</li>';
+		    $config['prev_link'] = '&laquo;';
+		    $config['prev_tag_open'] = '<li>';
+		    $config['prev_tag_close'] = '</li>';
+
+			$datos["titulo"] = " .: Mantenimiento :.";
+
+			$datos["pendientes"] = $this->Solicitudes_model->get_pendientes($config['per_page'], $desde);
+
+			$this->pagination->initialize($config);
+
+		    $this->load->view("header", $datos);
+		    $this->load->view("solicitudes/buscar_pendiente", $datos);
+		    $this->load->view("footer", $datos);
+		    $this->load->view("fin", $datos);
+		}
+		
+	}
+
+	function get_pendientes_criterio(){
+		$datos = $this->Solicitudes_model->get_pendientes_by_criterio($this->input->get("id"), $this->input->get("fecsol"), $this->input->get("idmaq"));
+		echo json_encode($datos);
+	}
+
+	function form_editar_pendientes($id){
+
+		if (!$this->session->userdata('sess_id_user')) {
+		   	redirect("login");
+		}else{
+			$datos["titulo"] = " .: Mantenimiento :.";
+
+			$datos["pendiente"] = $this->Solicitudes_model->get_pendientes_by_id($id);
+			
+		    $this->load->view("header", $datos);
+		    $this->load->view("Solicitudes/editar_pendientes", $datos);
+		    $this->load->view("footer", $datos);
+		    $this->load->view("fin", $datos);
+		}
+		
+	}
+
+	function cerrar_pendiente(){
+		$datos["mensaje"] = $this->Solicitudes_model->cerrar_pendiente($this->input->get("id"));
+		echo json_encode($datos);
 	}
 
 	function check_default($valor_post){
