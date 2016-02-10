@@ -185,7 +185,9 @@
 							    	data:{
 							    		'id'		: 	id,
 							    		'solicita'	: 	solicita,
-							    		'detalle'	: 	detalle
+							    		'detalle'	: 	detalle,
+							    		'maquina'	: 	maquina,
+							    		'descmaq'	: 	descmaq
 							    		
 							    	},
 							    	success:function(){

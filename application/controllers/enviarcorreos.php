@@ -24,6 +24,7 @@ class EnviarCorreos extends CI_controller
 
 		$html = "<h3>Solicitud de Mantenimiento N ". $this->input->get("id") ."</h3><br>";
 		$html .= "<p><strong>Solicitante:</strong> ". $this->input->get("solicita") ."</p><br>";
+		$html .= "<p><strong>Maquina:</strong> ". $this->input->get("maquina") . " - " . $this->input->get("descmaq") ."</p><br>";
 		$html .= "<p><strong>Detalle:</strong> ". $this->input->get("detalle") ."</p><br>";
  
 		//cargamos la configuración para enviar con gmail
