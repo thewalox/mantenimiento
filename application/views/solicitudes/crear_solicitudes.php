@@ -178,6 +178,8 @@
 								var id = json.mensaje;							
 								var solicita = $("#cedula").val() + ' - ' + $("#nombre").val();
 								var detalle = $("#detalle").val();
+								var maquina = $("#maquina").val();
+								var descmaq = $("#descmaq").val();
 								//envio el correo de creacion de la solicitud
 								$.ajax({
 							    	type:"GET",
