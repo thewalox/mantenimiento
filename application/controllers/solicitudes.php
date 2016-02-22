@@ -346,6 +346,74 @@ class Solicitudes extends CI_controller
 		echo json_encode($datos);
 	}
 
+	function exportar(){
+		$this->load->library("PHPExcel");
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->setActiveSheetIndex(0);
+        //name the worksheet
+        $objPHPExcel->getActiveSheet()->setTitle('Solicitudes');
+        //set cell A1 content with some text
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'Reporte de Solicitudes');
+        $objPHPExcel->getActiveSheet()->setCellValue('A3', 'Id');
+        $objPHPExcel->getActiveSheet()->setCellValue('B3', 'Fecha');
+        $objPHPExcel->getActiveSheet()->setCellValue('C3', 'Servicio');
+        $objPHPExcel->getActiveSheet()->setCellValue('D3', 'Tipo Mantenimiento');
+        $objPHPExcel->getActiveSheet()->setCellValue('E3', 'Estado');
+        $objPHPExcel->getActiveSheet()->setCellValue('F3', 'Evento');
+        $objPHPExcel->getActiveSheet()->setCellValue('G3', 'Id Maquina');
+        $objPHPExcel->getActiveSheet()->setCellValue('H3', 'Desc. Maquina');
+        $objPHPExcel->getActiveSheet()->setCellValue('I3', 'Detalle');
+        //merge cell A1 until C1
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:C1');
+        //set aligment to center for that merged cell (A1 to C1)
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        //make the font become bold
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('B3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('C3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('D3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('E3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('F3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('G3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('H3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('I3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(16);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFill()->getStartColor()->setARGB('#333');
+       	for($col = ord('A'); $col <= ord('H'); $col++){
+        	//set column dimension
+            $objPHPExcel->getActiveSheet()->getColumnDimension(chr($col))->setAutoSize(true);
+            //change the font size
+            $objPHPExcel->getActiveSheet()->getStyle(chr($col))->getFont()->setSize(12);
+                 
+            $objPHPExcel->getActiveSheet()->getStyle(chr($col))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
+                //retrive contries table data
+        $solicitudes = $this->Solicitudes_model->get_solicitudes(0, 0);
+        $exceldata="";
+        foreach ($solicitudes as $sol){
+        	$exceldata[] = $sol;
+        }
+        //Fill data 
+        $objPHPExcel->getActiveSheet()->fromArray($exceldata, null, 'A4');
+                 
+        $objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('B4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('C4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                 
+        $filename='Solicitudes.xls'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+ 
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
+	}
+
 	function check_default($valor_post){
 		if($valor_post == '0'){ 
       		return FALSE;

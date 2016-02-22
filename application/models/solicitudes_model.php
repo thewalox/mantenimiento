@@ -68,8 +68,10 @@ class Solicitudes_model extends CI_Model
 				CASE WHEN s.servicio = 'IN' THEN 'INMEDIATO' ELSE 'NO INMEDIATO' END AS servicio,
 				CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
 				CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
-				CASE WHEN s.estado = 'P' THEN 'warning' ELSE 'success' END AS color
+				CASE WHEN s.estado = 'P' THEN 'warning' ELSE 'success' END AS color, 
+				s.idmaquina, m.desc_maquina, detalle
 				FROM solicitudes s
+				LEFT JOIN maquinas m ON m.idmaquina = s.idmaquina
 				WHERE s.estado <> 'X'
 				ORDER BY s.idsolicitud DESC ";
 
@@ -85,7 +87,7 @@ class Solicitudes_model extends CI_Model
 	}
 
 	function get_total_solicitudes(){
-		$this->db->from('solicitudes')->where('estado');
+		$this->db->from('solicitudes')->where('estado !=', 'X');
 		return $this->db->count_all_results();
   	}
 

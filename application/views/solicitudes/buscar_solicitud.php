@@ -63,6 +63,7 @@
 
 				<div class="form-group" id="content">
 					<form name="form">
+						<div><a href='<?php echo base_url(); ?>solicitudes/exportar' id='exportar' title='Exportar a Excel'><img src='<?php echo base_url(); ?>assets/img/excel.png' width='20px' height='20px' /></a></div>
 						<table class="table table-striped table-condensed table-hover">
 							<thead>
 								<tr>
