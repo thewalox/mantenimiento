@@ -69,7 +69,7 @@ class Solicitudes_model extends CI_Model
 				CASE WHEN s.tipo_mtto = 'P' THEN 'PREVENTIVO' ELSE 'CORRECTIVO' END AS tipo_mtto,
 				CASE WHEN s.estado = 'P' THEN 'EN PROCESO' ELSE 'CERRADA' END AS estado,
 				CASE WHEN s.estado = 'P' THEN 'warning' ELSE 'success' END AS color, 
-				s.idmaquina, m.desc_maquina, detalle
+				s.idmaquina, m.desc_maquina, s.detalle
 				FROM solicitudes s
 				LEFT JOIN maquinas m ON m.idmaquina = s.idmaquina
 				WHERE s.estado <> 'X'
@@ -258,6 +258,17 @@ class Solicitudes_model extends CI_Model
         	return false; //Error
 		}
 		
+	}
+
+	public function get_total_solicitudes_by_estado(){
+		$sql = "SELECT 'En proceso' AS estado, COUNT(*) AS total FROM solicitudes WHERE estado = 'P'
+				UNION
+				SELECT 'Cerradas' AS estado, COUNT(*) AS total FROM solicitudes WHERE estado = 'C'
+				UNION
+				SELECT 'Tareas Pendientes' AS estado, COUNT(*) AS total FROM solicitudes WHERE estado <> 'X' AND estado_pendiente = 'P'";		
+
+		$res = $this->db->query($sql);
+		return $res->result_array();
 	}
 
 }

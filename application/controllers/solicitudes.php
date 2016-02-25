@@ -381,6 +381,7 @@ class Solicitudes extends CI_controller
         $objPHPExcel->getActiveSheet()->getStyle('I3')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(16);
         $objPHPExcel->getActiveSheet()->getStyle('A1')->getFill()->getStartColor()->setARGB('#333');
+
        	for($col = ord('A'); $col <= ord('H'); $col++){
         	//set column dimension
             $objPHPExcel->getActiveSheet()->getColumnDimension(chr($col))->setAutoSize(true);
@@ -392,9 +393,11 @@ class Solicitudes extends CI_controller
                 //retrive contries table data
         $solicitudes = $this->Solicitudes_model->get_solicitudes(0, 0);
         $exceldata="";
+
         foreach ($solicitudes as $sol){
         	$exceldata[] = $sol;
         }
+        
         //Fill data 
         $objPHPExcel->getActiveSheet()->fromArray($exceldata, null, 'A4');
                  
