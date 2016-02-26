@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/number-format.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/md5.js"></script>
 
 	<style>
 		.ui-autocomplete-loading {
@@ -118,6 +119,7 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->session->userdata('sess_name_user'); ?><span class="caret"></span></a>
 							<ul class="dropdown-menu">
+								<li><a href="<?php echo base_url(); ?>login/form_cambio_clave"><strong>Cambiar Clave </strong><span class="glyphicon glyphicon-user"></span></a></li>
 					            <li><a href="<?php echo base_url(); ?>login/logout"><strong>Cerrar Sesion </strong><span class="glyphicon glyphicon-off"></span></a></li>
 				          	</ul>				
 						</li>

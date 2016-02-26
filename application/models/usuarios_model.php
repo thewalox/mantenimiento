@@ -16,4 +16,16 @@ class Usuarios_model extends CI_Model{
 		return $res->row();
 	}
 
+	public function edit_clave($pass, $user){
+		$sql = "UPDATE usuarios SET pass = ". $this->db->escape(md5($pass)) ."
+				WHERE login = '$user'";
+		//echo $sql;			
+		if ($this->db->simple_query($sql)){
+        	return true; //Exito
+		}else{
+        	return false; //Error
+		}
+		
+	}
+
 }
