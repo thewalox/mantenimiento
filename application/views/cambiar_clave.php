@@ -16,7 +16,7 @@
 				</div>
 				<div align="center">
 					<input type="button" name="aceptar" id="aceptar" value="Aceptar" class="btn btn-primary">
-					<input type="button" name="cancelar" id="cancelar" value="Cancelar" class="btn btn-success">
+					<input type="button" name="cancelar" id="cancelar" value="Cancelar" class="btn btn-success" onclick="javascript:location.href = '<?php echo base_url().'login/form_cambio_clave'; ?>';">
 					<input type="hidden" name="usuario" id="usuario" value="<?php echo $this->session->userdata('sess_id_user');  ?>">
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 								$("#clavenueva").val("");
 								$("#clavenuevaconf").val("");
 							}else if(json.mensaje == false){
-									html += "<div class='alert alert-danger' role='alert'>Ah ocurrido un error al intentar dar por cumplida esta tarea. Por favor revise la informacion o comuniquese con el administrador del sistema</div>";
+									html += "<div class='alert alert-danger' role='alert'>Ah ocurrido un error al intentar actualizar la clave. Por favor revise la informacion o comuniquese con el administrador del sistema</div>";
 							}else{
 									html += "<div class='alert alert-danger' role='alert'>" + json.mensaje + "</div>";
 							}
