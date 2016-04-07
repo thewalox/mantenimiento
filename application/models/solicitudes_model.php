@@ -10,9 +10,9 @@ class Solicitudes_model extends CI_Model
 	}
 
 	public function add_solicitud($fecdoc, $cedula, $servicio, $tipo, $maquina, $orden, $detalle){
-		$sql = "INSERT INTO Solicitudes (fecha_solicitud, idempleado, servicio, tipo_mtto, 
+		$sql = "INSERT INTO solicitudes (fecha_solicitud, idempleado, servicio, tipo_mtto, 
 				idmaquina, orden_prod, detalle, estado)
-				VALUES (". $this->db->escape($fecdoc) . ", ". $this->db->escape($cedula) . ", ". 
+				VALUES (NOW(), ". $this->db->escape($cedula) . ", ". 
 				$this->db->escape($servicio) . ", ". $this->db->escape($tipo) . ", UPPER(". 
 				$this->db->escape($maquina) . "), UPPER(". $this->db->escape($orden) ."), UPPER(". 
 				$this->db->escape($detalle) ."), 'P')";

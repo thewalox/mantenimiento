@@ -31,7 +31,7 @@ class EnviarCorreos extends CI_controller
 		$this->email->initialize($configGmail);
  
 		$this->email->from('info@pjsas.co');
-		$this->email->to("sistemas@pjsas.co,mantenimiento@pjsas.co,asistente_mantenimiento@ipcaribe.com");
+		$this->email->to("mantenimiento@pjsas.co,asistente_mantenimiento@ipcaribe.com");
 		$this->email->subject('Nueva solicitud de Mantenimiento # '. $this->input->get("id"));
 		$this->email->message($html);
 		$this->email->send();

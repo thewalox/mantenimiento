@@ -362,7 +362,7 @@ $config['encryption_key'] = '3f21d33a835bee97c27e555e0690a692';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'session_logic';
+$config['sess_cookie_name'] = 'session_mtto';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
